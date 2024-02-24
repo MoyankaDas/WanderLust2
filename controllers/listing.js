@@ -28,8 +28,9 @@ module.exports.createListing=async(req,res)=>{
         limit: 1
     }).send();
 
-    let url=req.file.path;
-    let filename=req.file.filename;
+    let url=req.file.url;
+    let filename=req.file.public_id;
+    
     let newListing=new Listing(req.body.listing);
     newListing.owner=req.user._id;
     newListing.image={url,filename};
@@ -57,8 +58,8 @@ module.exports.updateListing=async(req,res)=>{
     let {id}=req.params;
     let listing=await Listing.findByIdAndUpdate(id,{...req.body.listing});
     if(req.file){
-        let url=req.file.path;
-        let filename=req.file.filename;
+        let url=req.file.url;
+        let filename=req.file.public_id;
         listing.image={url,filename};
         await listing.save();
     }

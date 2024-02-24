@@ -1,3 +1,7 @@
+if(process.env.NODE_ENV != "production"){
+    require('dotenv').config()
+}
+
 const express=require("express");
 const app=express();
 const mongoose=require("mongoose");
@@ -18,7 +22,7 @@ const listingRoute=require("./routes/listing.js");
 const reviewRoute=require("./routes/review.js");
 const userRoute=require("./routes/user.js");
 
-let dbURL="mongodb+srv://dasmoyanka:aNdwkHqZY8WkTCZD@cluster0.nmlgfyy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+let dbURL=process.env.ATLASDB_URL;
 // let mongoURL='mongodb://127.0.0.1:27017/WanderLust;'
 async function main(){
     await mongoose.connect(dbURL);
@@ -76,16 +80,6 @@ app.use((req,res,next)=>{
     res.locals.currUser=req.user;
     next();
 })
-
-// app.get("/demouser",async(req,res)=>{
-//     let demouser=new User({
-//         email:"dasmoyanka@gmail.com",
-//         username:"Moyanka"
-//     });
-
-//     let registeredUser=await User.register(demouser,"hello123");
-//     res.send(registeredUser);
-// })
 
 app.use("/listings",listingRoute);
 app.use("/listings/:id/reviews",reviewRoute);

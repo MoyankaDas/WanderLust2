@@ -1,7 +1,3 @@
-if(process.env.NODE_ENV != "production"){
-    require('dotenv').config()
-}
-
 const express=require("express");
 const router=express.Router();
 const wrapAsync = require("../utils/wrapAsync.js");
@@ -19,6 +15,9 @@ router.route("/")
 .get(wrapAsync(listingController.index))
 //create route
 .post(isLoggedIn,upload.single('listing[image]'),validateListing,wrapAsync(listingController.createListing));
+// .post(upload.single('listing[image]'),(req,res)=>{
+//     res.send(req.file);
+// })
 
 //new route
 router.get("/new",isLoggedIn,listingController.renderNewForm);
