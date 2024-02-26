@@ -30,11 +30,12 @@ module.exports.createListing=async(req,res)=>{
 
     let url=req.file.url;
     let filename=req.file.public_id;
-    
+   
     let newListing=new Listing(req.body.listing);
     newListing.owner=req.user._id;
     newListing.image={url,filename};
     newListing.geometry=response.body.features[0].geometry;
+    
     let saved=await newListing.save();
     console.log(saved);
     req.flash("success","New Listing Created");

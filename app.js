@@ -91,12 +91,12 @@ app.listen(8080,()=>{
 
 //...............
 //error handling for all non-route pages
-app.all("*",(req,res,next)=>{
-    next(new ExpressError(404,"Page Not Found"));
-})
+// app.all("*",(req,res,next)=>{
+//     next(new ExpressError(404,"Page Not Found"));
+// })
 
 //error handling middleware
-app.use((err,req,res,next)=>{
-    let {statusCode=401,message="something went wrong"}=err;
-    res.status(statusCode).render("error.ejs",{message});
-})
+// app.use((err,req,res,next)=>{
+//     let {statusCode=401,message="something went wrong"}=err;
+//     res.status(statusCode).render("error.ejs",{message});
+// })

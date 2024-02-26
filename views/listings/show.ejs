@@ -3,6 +3,7 @@
         const mapToken = "<%= process.env.MAP_TOKEN %>";
         const listing = <%- JSON.stringify(listing) %>;
     </script>
+    
     <div class="row mt-3">
         <div class="col-8 offset-3">
             <h3>
@@ -16,6 +17,9 @@
                     Owned By: <b><i>
                             <%= listing.owner.username %>
                         </i></b>
+                </p>
+                <p class="card-text">
+                    <%= listing.category %>
                 </p>
                 <p class="card-text">
                     <%= listing.description %>
