@@ -32,6 +32,7 @@ const listingSchema = new mongoose.Schema({
             ref: "Review"
         }
     ],
+    
     owner: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User"
@@ -50,8 +51,8 @@ const listingSchema = new mongoose.Schema({
     category:{
         type:String,
         enum:["Trending","Rooms","Iconic cities","Mountain","Castles","Arctic","Camping","Farms","Pools","Domes","Boats","Forest","Beach","Others"],
-        required:true
-    }
+       
+    },
 })
 
 listingSchema.post("findOneAndDelete", async (listing) => {

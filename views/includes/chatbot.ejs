@@ -1,0 +1,218 @@
+<style>
+  /* Scrollbar styling */
+  #chat-messages::-webkit-scrollbar {
+    width: 6px;
+  }
+  #chat-messages::-webkit-scrollbar-thumb {
+    background:  #fe4264;
+    border-radius: 10px;
+  }
+
+  /* Chat toggle button */
+  #chat-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 9999;
+    cursor: pointer;
+    background:  #fe4264;
+    border-radius: 50%;
+    padding: 12px;
+    box-shadow: 0 4px 8px rgba(255, 0, 0, 0.4);
+    transition: background-color 0.3s ease;
+  }
+  #chat-toggle:hover {
+    background:  #fe4264;
+  }
+  #chat-toggle img {
+    display: block;
+    filter: brightness(100%) invert(100%);
+  }
+
+  /* Chat box container */
+  #chat-box {
+    display: none;
+    position: fixed;
+    bottom: 80px;
+    right: 20px;
+    width: 320px;
+    max-height: 420px;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #333;
+    z-index: 10000;
+    flex-direction: column;
+    display: none;
+  }
+
+  /* Header */
+  #chat-header {
+    background:  #fe4264;
+    color: white;
+    padding: 15px 20px;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    font-weight: 600;
+    font-size: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    user-select: none;
+  }
+  #chat-header span {
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    transition: color 0.3s ease;
+  }
+  #chat-header span:hover {
+    color: #ccc;
+  }
+
+  /* Messages area */
+  #chat-messages {
+    flex-grow: 1;
+    padding: 15px 20px;
+    overflow-y: auto;
+    font-size: 14px;
+  }
+
+  /* Message bubbles */
+  .message {
+    margin-bottom: 12px;
+    max-width: 80%;
+    line-height: 1.4;
+    padding: 8px 14px;
+    border-radius: 18px;
+    clear: both;
+    word-wrap: break-word;
+  }
+  .message.user {
+    background:  #fe4264;
+    color: white;
+    float: right;
+    border-bottom-right-radius: 4px;
+  }
+  .message.bot {
+    background: #f1f1f1;
+    color: #333;
+    float: left;
+    border-bottom-left-radius: 4px;
+  }
+
+  /* Input area */
+  #chat-input-area {
+    display: flex;
+    border-top: 1px solid #ddd;
+    padding: 10px 15px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    background: #fafafa;
+  }
+  #chat-input {
+    flex: 1;
+    border: none;
+    padding: 10px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    outline: none;
+    background: white;
+    box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  }
+  #chat-input::placeholder {
+    color: #aaa;
+  }
+  #chat-send-btn {
+    margin-left: 10px;
+    background:  #fe4264;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 20px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  #chat-send-btn:hover {
+    background:  #fe4264;
+  }
+</style>
+
+<!-- Floating Chat Icon -->
+<div id="chat-toggle" title="Open Chat">
+  <img src="https://img.icons8.com/ios-filled/50/chat.png" width="26" height="26" alt="Chat" />
+</div>
+
+<!-- Chat Window -->
+<div id="chat-box" role="dialog" aria-modal="true" aria-labelledby="chat-header">
+  <div id="chat-header">
+    WanderLust ChatBot
+    <span aria-label="Close chat window" role="button" tabindex="0" onclick="toggleChat()">✕</span>
+  </div>
+  <div id="chat-messages" aria-live="polite" aria-atomic="false"></div>
+  <div id="chat-input-area">
+    <input id="chat-input" type="text" placeholder="Ask a question..." aria-label="Chat input box" />
+    <button id="chat-send-btn" onclick="handleUserInput()" aria-label="Send message">Send</button>
+  </div>
+</div>
+
+<script>
+  const predefinedQA = {
+    "hi": "Hello! How can I help you today?",
+    "hello": "Hi there! What can I do for you?",
+    "hey": "Hey! Feel free to ask me anything about WanderLust.",
+    "how to book a stay?": "To book a stay, click on a listing and select your desired dates, then proceed to customization and payment.",
+    "what is wanderlust?": "WanderLust is a platform to find and book unique travel stays and experiences.",
+    "how to cancel a booking?": "Go to your booking history and click 'Cancel' next to the booking you want to cancel.",
+    "what payment methods are supported?": "We support virtual bank balance payment inside the platform.",
+    "contact support": "Please email us at support@wanderlust.com or use the help section.",
+    "thank you": "You're welcome! Let me know if you have more questions.",
+    "thanks": "Happy to help! Anything else you want to know?",
+    "bye": "Goodbye! Have a great day.",
+    "goodbye": "See you later! Come back soon.",
+  };
+
+  document.getElementById('chat-toggle').addEventListener('click', toggleChat);
+
+  // Also close chat with Esc key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      const chatBox = document.getElementById('chat-box');
+      if (chatBox.style.display === 'block') toggleChat();
+    }
+  });
+
+  function toggleChat() {
+    const chatBox = document.getElementById('chat-box');
+    if (chatBox.style.display === 'none' || !chatBox.style.display) {
+      chatBox.style.display = 'flex';
+      document.getElementById('chat-input').focus();
+    } else {
+      chatBox.style.display = 'none';
+    }
+  }
+
+  function handleUserInput() {
+    const input = document.getElementById('chat-input');
+    const userText = input.value.trim().toLowerCase();
+    if (!userText) return;
+
+    appendMessage("user", userText);
+    input.value = '';
+
+    const reply = predefinedQA[userText] || "Sorry, I don't understand that. Try asking something else.";
+    setTimeout(() => appendMessage("bot", reply), 500);
+  }
+
+  function appendMessage(sender, text) {
+    const container = document.getElementById('chat-messages');
+    const msg = document.createElement('div');
+    msg.classList.add('message', sender);
+    msg.textContent = text;
+    container.appendChild(msg);
+    container.scrollTop = container.scrollHeight;
+  }
+
+</script>

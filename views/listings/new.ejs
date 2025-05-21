@@ -1,85 +1,158 @@
 <% layout("./layouts/boilerplate.ejs") %>
 
-    <body>
-        <div class="row mt-3">
-            <div class="col-8 offset-2">
-                <br><br>
-                <h2>Create a New Listing</h2>
-                <form action="/listings" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
-                    <div class="mb-3">
-                        <label for="title" class="form-label">Title</label>
-                        <input required type="text" class="form-control" placeholder="Add a cache title" name="listing[title]">
-                        <div class="valid-feedback">
-                            Title looks good
-                        </div>
-                        <div class="invalid-feedback">
-                            Title should be valid
-                        </div>
-                    </div>
+<style>
+  body {
+    background-color: #f8f9fa;
+    color: #212529;
+    transition: background-color 0.3s, color 0.3s;
+  }
 
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Description</label>
-                        <textarea required class="form-control" name="listing[description]" placeholder="Enter description" id=""
-                            cols="30" rows="10"></textarea>
-                            <div class="invalid-feedback">
-                                Please enter a short description
-                            </div>
-                    </div>
+  .dark-mode {
+    background-color: #121212 !important;
+    color: #e0e0e0 !important;
+  }
 
-                    <div class="mb-3">
-                        <label for="image" class="form-label">Upload Image</label>
-                        <input type="file" class="form-control" name="listing[image]">
-                    </div>
+  .dark-mode .card {
+    background-color: #1e1e1e;
+    border-color: #333;
+    color:white
+  }
 
-                    <div class="mb-3">
-                        <label for="category" class="form-label">Category</label>
-                        <select class="form-select" aria-label="Default select example" name="listing[category]" id="category">
-                            <option selected>Others</option>
-                            <option value="Trending">Trending</option>
-                            <option value="Rooms">Rooms</option>
-                            <option value="Iconic cities">Iconic cities</option>
-                            <option value="Mountain">Mountain</option>
-                            <option value="Castles">Castles</option>
-                            <option value="Arctic">Arctic</option>
-                            <option value="Camping">Camping</option>
-                            <option value="Farms">Farms</option>
-                            <option value="Pools">Pools</option>
-                            <option value="Domes">Domes</option>
-                            <option value="Boats">Boats</option>
-                            <option value="Forest">Forest</option>
-                            <option value="Beach">Beach</option>
-                          </select>
-                    </div>
+  .dark-mode .form-control,
+  .dark-mode .form-select {
+    background-color: #2c2c2c;
+    color: #f1f1f1;
+    border-color: #444;
+  }
 
-                    <div class="row">
-                        <div class="mb-3 col-md-4">
-                            <label for="price" class="form-label">Price</label>
-                            <input required type="text" class="form-control" placeholder="1200" name="listing[price]">
-                            <div class="invalid-feedback">
-                                Price should be valid
-                            </div>
-                        </div>
+  .dark-mode label,
+  .dark-mode .form-label {
+    color: #ccc;
+  }
 
-                        <div class="mb-3 col-md-8">
-                            <label for="country" class="form-label">Country</label>
-                            <input required type="text" class="form-control" placeholder="India" name="listing[country]">
-                            <div class="invalid-feedback">
-                                Country name should be valid
-                            </div>
-                        </div>
-                    </div>
+  .dark-mode .btn-dark {
+    background-color: #bb86fc;
+    border: none;
+  }
 
-                    <div class="mb-3">
-                        <label for="location" class="form-label">Location</label>
-                        <input required type="text" class="form-control" placeholder="Murshidabad, WestBengal" name="listing[location]">
-                        <div class="invalid-feedback">
-                            Location should be valid
-                        </div>
-                    </div>
+  .form-floating label {
+    color: #6c757d;
+  }
 
-                    <button class="btn btn-dark add-btn mt-3">Submit</button>
-                    <br><br>
-                </form>
-            </div>
+  .form-control:focus,
+  .form-select:focus {
+    border-color: #fe4264;
+    box-shadow: 0 0 0 0.2rem rgba(254, 66, 100, 0.25);
+  }
+
+  .btn-dark {
+    background-color: #fe4264;
+    border: none;
+  }
+
+  .btn-dark:hover {
+    background-color: #e93c5d;
+  }
+</style>
+
+<body>
+  <div class="container my-5">
+    <div class="row justify-content-center">
+      <div class="col-lg-9 col-md-10">
+        <div class="card shadow-lg rounded-4 border-0">
+          <div class="card-body p-5" style="margin:4rem">
+            <h2 class="mb-4 text-center fw-bold">Create a New Listing</h2>
+            <form action="/listings" method="POST" enctype="multipart/form-data" class="needs-validation" novalidate>
+
+              <div class="form-floating mb-4">
+                <input type="text" name="listing[title]" id="title" class="form-control" placeholder="Title" required>
+                <label for="title">Title</label>
+                <div class="invalid-feedback">Please enter a title.</div>
+              </div>
+
+              <div class="form-floating mb-4">
+                <textarea name="listing[description]" id="description" class="form-control" placeholder="Description" style="height: 120px" required></textarea>
+                <label for="description">Description</label>
+                <div class="invalid-feedback">Please enter a short description.</div>
+              </div>
+
+              <div class="mb-4">
+                <label for="image" class="form-label">Upload Image</label>
+                <input type="file" name="listing[image]" id="image" class="form-control" required>
+                <div class="invalid-feedback">Please upload an image.</div>
+              </div>
+
+              <div class="mb-4">
+                <label for="category" class="form-label">Category</label>
+                <select name="listing[category]" id="category" class="form-select">
+                  <option selected disabled>Select category</option>
+                  <option>Trending</option>
+                  <option>Rooms</option>
+                  <option>Iconic cities</option>
+                  <option>Mountain</option>
+                  <option>Castles</option>
+                  <option>Arctic</option>
+                  <option>Camping</option>
+                  <option>Farms</option>
+                  <option>Pools</option>
+                  <option>Domes</option>
+                  <option>Boats</option>
+                  <option>Forest</option>
+                  <option>Beach</option>
+                  <option>Others</option>
+                </select>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                    <input type="number" name="listing[price]" id="price" class="form-control" placeholder="Price" min="0" required>
+                    <label for="price">Price (₹)</label>
+                    <div class="invalid-feedback">Enter a valid price.</div>
+                  </div>
+                </div>
+
+                <div class="col-md-6 mb-4">
+                  <div class="form-floating">
+                    <input type="text" name="listing[country]" id="country" class="form-control" placeholder="Country" required>
+                    <label for="country">Country</label>
+                    <div class="invalid-feedback">Enter a valid country name.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-floating mb-4">
+                <input type="text" name="listing[location]" id="location" class="form-control" placeholder="Location" required>
+                <label for="location">Location</label>
+                <div class="invalid-feedback">Please enter the location.</div>
+              </div>
+
+              <div class="d-grid">
+                <button type="submit" class="btn btn-dark btn-lg rounded-3 mt-3">Submit Listing</button>
+              </div>
+            </form>
+          </div>
         </div>
-    </body>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap Validation -->
+  <script>
+    (() => {
+      'use strict';
+      const forms = document.querySelectorAll('.needs-validation');
+      Array.from(forms).forEach(form => {
+        form.addEventListener('submit', event => {
+          if (!form.checkValidity()) {
+            event.preventDefault();
+            event.stopPropagation();
+          }
+          form.classList.add('was-validated');
+        }, false);
+      });
+    })();
+  </script>
+
+ 
+</body>

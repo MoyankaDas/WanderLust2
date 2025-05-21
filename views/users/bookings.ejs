@@ -1,0 +1,105 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+  .booking-card {
+    border-radius: 1.5rem;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s;
+  }
+
+  .booking-card:hover {
+    transform: translateY(-3px);
+  }
+
+  .booking-img {
+    height: 200px;
+    object-fit: cover;
+    border-radius: 1rem 0 0 1rem;
+  }
+
+  .dark-mode .booking-card {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+  }
+
+  .booking-info small {
+    color: #888;
+  }
+
+  .btn-rounded {
+    border-radius: 50px;
+  }
+</style>
+
+<div class="container my-5">
+  <!-- Virtual Balance -->
+  <div class="text-center mb-5">
+    <h4 class="fw-bold">💰 Virtual Bank Balance</h4>
+    <div class="badge bg-success fs-4 py-2 px-4 rounded-pill shadow">
+      ₹<%= virtualBank.toLocaleString() %>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <div class="text-center mb-4">
+    <h1 class="fw-bold display-5">📘 Your Trips</h1>
+    <p class="text-muted">Review your past and upcoming bookings</p>
+  </div>
+
+  <% if (bookings.length === 0) { %>
+    <div class="alert alert-warning text-center fs-5">No bookings made yet.</div>
+  <% } else { %>
+    <div class="row g-4">
+      <% bookings.forEach(b => { %>
+        <div class="col-12">
+          <div class="card booking-card d-flex flex-md-row align-items-center p-3">
+            
+            <!-- Image -->
+            <div class="col-md-4">
+              <img src="<%= b.listing.image.url %>" alt="Listing Image" class="booking-img w-100"  style="border-radius: 1rem;">
+            </div>
+
+            <!-- Info -->
+            <div class="col-md-8 px-md-4 py-3 booking-info">
+              <div class="d-flex justify-content-between align-items-center mb-2">
+                <h5 class="mb-0 text-primary"><%= b.listing.title %></h5>
+                <span class="badge bg-dark">₹<%= b.price.toLocaleString() %></span>
+              </div>
+              <p class="mb-1"><i class="bi bi-geo-alt"></i> <%= b.listing.location %></p>
+              <small>Booked on <%= new Date(b.createdAt).toLocaleDateString() %></small>
+
+              <hr>
+
+              <div class="row">
+                <div class="col-md-4">
+                  <p><i class="bi bi-calendar-check"></i> Check-in: <%= new Date(b.checkIn).toLocaleDateString() %></p>
+                  <p><i class="bi bi-calendar-x"></i> Check-out: <%= new Date(b.checkOut).toLocaleDateString() %></p>
+                </div>
+                <div class="col-md-4">
+                  <p>👥 Adults: <%= b.adults %>, 🧒 Orphans: <%= b.orphans %></p>
+                  <p>👶 Children: <%= b.children %>, 🐶 Pets: <%= b.pets %></p>
+                </div>
+                <div class="col-md-4">
+                  <p>🛏 Bedrooms: <%= b.customBedrooms %>, 🛁 Bathrooms: <%= b.customBathrooms %></p>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between align-items-center mt-3">
+                <div>
+                  <small class="text-muted">Booked by: <%= b.user.username %> (<%= b.user.email %>)</small>
+                </div>
+                <div>
+                  <a href="/bookings/<%= b._id %>/edit" class="btn btn-outline-primary btn-sm btn-rounded me-2">✏️ Edit</a>
+                  <form action="/bookings/<%= b._id %>/delete" method="POST" class="d-inline">
+                    <button class="btn btn-outline-danger btn-sm btn-rounded">🗑 Delete</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      <% }) %>
+    </div>
+  <% } %>
+</div>

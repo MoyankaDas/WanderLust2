@@ -1,0 +1,47 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="container my-5">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold text-primary">
+      <i class="bi bi-bar-chart-line-fill"></i> Balance Sheet
+    </h2>
+    <a href="/listings" class="btn btn-outline-secondary rounded-pill px-4">
+      <i class="bi bi-arrow-left"></i> Back
+    </a>
+  </div>
+
+  <div class="card shadow-lg border-0 rounded-4">
+    <div class="card-body p-4">
+      <div class="table-responsive">
+        <table class="table table-hover align-middle">
+          <thead class="table-primary text-uppercase text-center">
+            <tr>
+              <th>Listing Title</th>
+              <th>User</th>
+              <th>Package</th>
+              <th>Total Price</th>
+              <th>Booking Date</th>
+            </tr>
+          </thead>
+          <tbody class="text-center">
+            <% bookings.forEach(booking => { %>
+              <tr>
+                <td class="fw-semibold text-start"><i class="bi bi-house-door-fill text-muted me-2"></i> <%= booking.title %></td>
+                <td><span class="badge text-bg-secondary px-3 py-2"><%= booking.username %></span></td>
+                <td><span class="text-info fw-semibold"><%= booking.package %></span></td>
+                <td class="text-success fw-bold">₹<%= booking.totalPrice.toLocaleString() %></td>
+                <td><i class="bi bi-calendar-event text-muted me-1"></i> <%= booking.bookingDate %></td>
+              </tr>
+            <% }) %>
+          </tbody>
+          <tfoot>
+            <tr class="table-light fw-bold fs-5 text-center">
+              <td colspan="3" class="text-end">Total Revenue:</td>
+              <td colspan="2" class="text-success">₹<%= totalRevenue.toLocaleString() %></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

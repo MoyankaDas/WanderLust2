@@ -21,6 +21,7 @@ module.exports.signup=async(req,res)=>{
         })
     } catch(err){
         req.flash("error",err.message);
+        console.log("error");
         res.redirect("/signup");
     }
 }
@@ -45,3 +46,4 @@ module.exports.logout=(req,res,next)=>{
         }
     })
 }
+

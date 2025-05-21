@@ -21,9 +21,14 @@ const User=require("./models/user.js");
 const listingRoute=require("./routes/listing.js");
 const reviewRoute=require("./routes/review.js");
 const userRoute=require("./routes/user.js");
+const bookingsRoute = require('./routes/booking.js');
+
+const userRoutes = require('./routes/users');
+const wishlistRoutes = require("./routes/wishlist");
+const balanceRoutes = require("./routes/balance");
+
 
 let dbURL=process.env.ATLASDB_URL;
-// let mongoURL='mongodb://127.0.0.1:27017/WanderLust;'
 async function main(){
     await mongoose.connect(dbURL);
 }
@@ -49,7 +54,7 @@ const store=MongoStore.create({
     touchAfter:24*3600
 });
 
-store.on("error",()=>{
+store.on("error",(err)=>{
     console.log(err);
 });
 
@@ -59,7 +64,7 @@ const sessionOptions={
     resave:false,
     saveUninitialized:true,
     cookie:{
-        expires:Date.now()*7*24*60*60*1000,
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         maxAge:7*24*60*60*1000,
         httpOnly:true
     }
@@ -84,10 +89,16 @@ app.use((req,res,next)=>{
 app.use("/listings",listingRoute);
 app.use("/listings/:id/reviews",reviewRoute);
 app.use("/",userRoute);
+app.use("/",bookingsRoute);
+app.use('/users', userRoutes);
+app.use("/", wishlistRoutes);
+app.use(balanceRoutes);
+
 
 app.listen(8080,()=>{
     console.log("app listening");
 })
+
 
 //...............
 //error handling for all non-route pages

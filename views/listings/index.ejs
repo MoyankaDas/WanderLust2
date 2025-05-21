@@ -1,182 +1,431 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
-    <body>
+    <body class="bg-light">
+
         <style>
+            /* Filter Section */
             #filters {
                 display: flex;
                 flex-wrap: wrap;
                 align-items: center;
+                justify-content: center;
             }
 
             .filter {
                 text-align: center;
                 margin-top: 2rem;
                 opacity: 0.7;
-                margin-right: 0.5rem;
+                margin-right: 1rem;
+                transition: opacity 0.3s ease, transform 0.3s ease;
             }
 
             .filter:hover {
                 opacity: 1;
                 cursor: pointer;
+                transform: scale(1.05);
+            }
+
+            
+            .filter i {
+                font-size: 1.5rem;
+                margin-bottom: 0.5rem;
+                transition: transform 0.2s ease;
             }
 
             .filter p {
                 font-size: 0.75rem;
             }
 
-            .tax-info {
-                display: none;
+            .filter:hover i {
+                transform: scale(1.1);
             }
 
+            .icon-trending {
+                color: #e74c3c;
+            }
+
+            /* Red */
+            .icon-rooms {
+                color: #8e44ad;
+            }
+
+            /* Purple */
+            .icon-cities {
+                color: #3498db;
+            }
+
+            /* Blue */
+            .icon-mountain {
+                color: #2ecc71;
+            }
+
+            /* Green */
+            .icon-castles {
+                color: #9b59b6;
+            }
+
+            /* Violet */
+            .icon-arctic {
+                color: #00bfff;
+            }
+
+            /* Light Blue */
+            .icon-camping {
+                color: #e67e22;
+            }
+
+            /* Orange */
+            .icon-farms {
+                color: #27ae60;
+            }
+
+            /* Farm Green */
+            .icon-pools {
+                color: #2980b9;
+            }
+
+            /* Pool Blue */
+            .icon-domes {
+                color: #1abc9c;
+            }
+
+            /* Teal */
+            .icon-boats {
+                color: #0077b6;
+            }
+
+            /* Deep Blue */
+            .icon-forest {
+                color: #14532d;
+            }
+
+            /* Forest Green */
+            .icon-beach {
+                color: #f39c12;
+            }
+
+            /* Sunny Yellow */
+            .icon-all {
+                color: #555;
+            }
+
+            /* Neutral Gray */
+
+            /* Tax Info Section */
             .tax-toggle {
-                border: 1px solid black;
-                border-radius: 1rem;
+                border: 1px solid #ccc;
+                border-radius: 50px;
                 height: 3.25rem;
                 padding: 1rem;
-                margin-left: 2rem;
                 display: flex;
                 align-items: center;
-                background-color: #000;
+                justify-content: space-between;
+                background-color: #343a40;
                 color: white;
                 font-weight: 600;
+                margin-top: 2rem;
+                cursor: pointer;
+                transition: background-color 0.3s ease;
             }
 
-            .filter i {
-                font-size: 1.25rem;
+            .tax-toggle:hover {
+                background-color: #6c757d;
             }
 
-            .btn {
-                border: none;
+            /* Listing Cards */
+            .listing-card {
+                position: relative;
+                overflow: hidden;
+                transition: transform 0.3s ease;
+            }
+
+            .listing-card:hover {
+                transform: translateY(-10px);
+            }
+
+            .listing-card .card-img-top {
+                height: 20rem;
+                object-fit: cover;
+            }
+
+            .listing-card .card-body {
+                background-color: rgba(0, 0, 0, 0.6);
+                color: white;
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding: 1rem;
+            }
+
+            .listing-card .card-text {
+                font-size: 1.2rem;
+            }
+
+            .listing-card .love {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                font-size: 1.5rem;
+                color: white;
+                cursor: pointer;
+                transition: color 0.3s ease;
+            }
+
+            .listing-card .love:hover {
+                color: red;
+            }
+
+            .listing-link {
+                text-decoration: none;
+            }
+        </style>
+        <style>
+            #wanderlustBanner.animate {
+                animation: slideBannerToCorner 2.4s ease-out forwards;
+            }
+
+            @keyframes slideBannerToCorner {
+                0% {
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%) scale(1);
+                    opacity: 0;
+                }
+
+                15% {
+                    opacity: 1;
+                }
+
+                100% {
+                    top: 1.2rem;
+                    left: auto;
+                    right: 1.2rem;
+                    transform: scale(0.85);
+                    opacity: 1;
+                }
             }
         </style>
 
-        
-        <div id="filters">
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-fire"></i></div>
-                    <p>Trending</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <a href=""></a>
-                    <div><i class="fa-solid fa-bed"></i></div>
-                    <p>Rooms</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-city"></i></div>
-                    <p>Iconic cities</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-mountain"></i></div>
-                    <p>Mountain</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-brands fa-fort-awesome"></i></div>
-                    <p>Castles</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-snowflake"></i></div>
-                    <p>Arctic</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-campground"></i></div>
-                    <p>Camping</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-cow"></i></div>
-                    <p>Farms</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-person-swimming"></i></div>
-                    <p>Pools</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-igloo"></i></div>
-                    <p>Domes</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-sailboat"></i></div>
-                    <p>Boats</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-tree"></i></div>
-                    <p>Forest</p>
-                </button>
-            </div>
-            <div class="filter">
-                <button class="btn">
-                    <div><i class="fa-solid fa-umbrella-beach"></i></div>
-                    <p>Beach</p>
-                </button>
-            </div>
-        
+        <!-- Hazy Overlay -->
+        <div id="hazyOverlay" class="position-fixed top-0 start-0 w-100 h-100"
+            style="z-index: 1050; background-color: rgba(0,0,0,0.4); backdrop-filter: blur(4px); display: none;"></div>
 
-            <div class="tax-toggle">
-                <div class="form-check-reverse form-switch">
-                    <input class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
-                    <label class="form-check-label" for="flexSwitchCheckDefault">Display total after taxes</label>
-                </div>
+        <!-- Welcome Banner -->
+        <div id="wanderlustBanner"
+            class="position-fixed start-50 top-50 translate-middle rounded-4 shadow-lg overflow-hidden text-white"
+            style="width: 340px; height: 180px; background-image: url('https://source.unsplash.com/340x180/?travel,nature'); background-size: cover; background-position: center; z-index: 1055; opacity: 0; ">
+            <div class="h-100 w-100 d-flex flex-column justify-content-end p-3"
+                style="background: linear-gradient(to top, rgba(0,0,0,0.6), rgba(0,0,0,0));">
+                <h5 class="mb-1">🌍 Welcome to WanderLust</h5>
+                <p class="mb-0 small">Find your perfect stay and explore the world</p>
             </div>
         </div>
 
+        <!-- Filters -->
+        <div id="filters">
+            <div class="filter">
+                <button class="btn" data-category="Trending">
+                    <div><i class="fa-solid fa-fire icon-trending"></i></div>
+                    <p>Trending</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Rooms">
+                    <div><i class="fa-solid fa-bed icon-rooms"></i></div>
+                    <p>Rooms</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Iconic cities">
+                    <div><i class="fa-solid fa-city icon-cities"></i></div>
+                    <p>Iconic cities</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Mountain">
+                    <div><i class="fa-solid fa-mountain  icon-mountain"></i></div>
+                    <p>Mountain</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Castles">
+                    <div><i class="fa-brands fa-fort-awesome icon-castles"></i></div>
+                    <p>Castles</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Arctic">
+                    <div><i class="fa-solid fa-snowflake icon-arctic"></i></div>
+                    <p>Arctic</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Camping">
+                    <div><i class="fa-solid fa-campground icon-camping"></i></div>
+                    <p>Camping</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Farms">
+                    <div><i class="fa-solid fa-cow icon-farms"></i></div>
+                    <p>Farms</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Pools">
+                    <div><i class="fa-solid fa-person-swimming icon-pools"></i></div>
+                    <p>Pools</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Domes">
+                    <div><i class="fa-solid fa-igloo icon-domes"></i></div>
+                    <p>Domes</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Boats">
+                    <div><i class="fa-solid fa-sailboat icon-boats"></i></div>
+                    <p>Boats</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Forest">
+                    <div><i class="fa-solid fa-tree icon-forest"></i></div>
+                    <p>Forest</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="Beach">
+                    <div><i class="fa-solid fa-umbrella-beach icon-beach"></i></div>
+                    <p>Beach</p>
+                </button>
+            </div>
+
+            <div class="filter">
+                <button class="btn" data-category="all">
+                    <div><i class="fa-solid fa-globe icon-all"></i></div>
+                    <p>Globe</p>
+                </button>
+            </div>
+        </div>
+
+
+
+
+        <!-- Listings -->
         <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 mt-2">
             <% for(let listing of allListings){ %>
                 <a href="/listings/<%= listing._id %>" class="listing-link">
-                    <div class="card col listing-card">
-                        <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image"
-                            style="height:20rem">
+                    <div class="card col listing-card" data-country="<%= listing.country.toLowerCase() %>"
+                        data-category="<%= listing.category.toLowerCase() %>">
+                        <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image">
                         <div class="card-img-overlay"><i class="fa-regular fa-heart love"></i></div>
                         <div class="card-body">
-                            <p class="card-text">
+                            <p class="card-text" style="padding: 0.5rem;">
                                 <b>
                                     <%= listing.title %>
                                 </b><br>
-                                &#8377; <%= listing.price.toLocaleString("en-IN") %> / night
-                                    <i class="tax-info">&nbsp;&nbsp;&nbsp;&nbsp; +15% GST</i>
+                                <span>
+                                    <%= listing.country %>
+                                </span>
                             </p>
                         </div>
                     </div>
                 </a>
-
                 <% } %>
         </div>
+        
+
+        <!-- JavaScript for Search and Filter -->
+        <script>
+            const searchBar = document.getElementById('searchBar');
+            const listings = document.querySelectorAll('.listing-card');
+
+            searchBar.addEventListener('input', function () {
+                const searchText = this.value.toLowerCase();
+                listings.forEach(card => {
+                    const country = card.getAttribute('data-country');
+                    if (country.includes(searchText)) {
+                        card.parentElement.style.display = 'block';
+                    } else {
+                        card.parentElement.style.display = 'none';
+                    }
+                });
+            });
+
+            // Tax Toggle
+            const taxToggle = document.getElementById('flexSwitchCheckDefault');
+            taxToggle.addEventListener('change', function () {
+                if (this.checked) {
+                    alert('Displaying total after taxes!');
+                } else {
+                    alert('Displaying prices without taxes.');
+                }
+            });
+        </script>
+
+
+        <script>
+            const filterButtons = document.querySelectorAll('.filter button');
+            // const listings = document.querySelectorAll('.listing-card');
+
+            filterButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.getAttribute('data-category').toLowerCase();
+
+                    listings.forEach(card => {
+                        const cardCategory = card.getAttribute('data-category');
+
+                        if (category === 'all' || (cardCategory && cardCategory.includes(category))) {
+                            card.parentElement.style.display = 'block';
+                        } else {
+                            card.parentElement.style.display = 'none';
+                        }
+                    });
+                });
+            });
+        </script>
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const banner = document.getElementById("wanderlustBanner");
+                const overlay = document.getElementById("hazyOverlay");
+
+                // Check if already shown in this session
+                if (!sessionStorage.getItem("bannerShown")) {
+                    sessionStorage.setItem("bannerShown", "true");
+
+                    // Show overlay and banner
+                    overlay.style.display = "block";
+                    banner.style.opacity = "1";
+
+                    // Auto-hide after a few seconds
+                    setTimeout(() => {
+                        banner.style.transition = "opacity 0.6s ease";
+                        overlay.style.transition = "opacity 0.6s ease";
+                        banner.style.opacity = "0";
+                        overlay.style.opacity = "0";
+
+                        setTimeout(() => {
+                            banner.remove();
+                            overlay.remove();
+                        }, 600);
+                    }, 6500);
+                }
+            });
+        </script>
 
     </body>
-
-    <script>
-        let taxbtn = document.getElementById("flexSwitchCheckDefault");
-        let taxInfo = document.getElementsByClassName("tax-info");
-        taxbtn.addEventListener("click", () => {
-            for (info of taxInfo) {
-                if (info.style.display != "inline") {
-                    info.style.display = "inline";
-                } else {
-                    info.style.display = "none";
-                }
-            }
-        })
-
-       
-    </script>

@@ -1,67 +1,95 @@
 <% layout("/layouts/boilerplate.ejs") %>
-    <div class="row mt-3">
-        <div class="col-8 offset-2">
-            <h2>Edit Your Listing</h2>
-            <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="title" class="form-label">Title</label>
-                    <input required type="text" class="form-control" value="<%= listing.title %>" name="listing[title]">
-                    <div class="valid-feedback">
-                        Title looks good
-                    </div>
-                    <div class="invalid-feedback">
-                        Title should be valid
-                    </div>
-                </div>
-
-                <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea required class="form-control" name="listing[description]"  id=""
-                        cols="30" rows="10"><%= listing.description %></textarea>
-                        <div class="invalid-feedback">
-                            Please enter a short description
+<body class="bg-light">
+    <div class="container mt-5 mb-5">
+        <div class="col-md-10 offset-md-1">
+            <div class="card shadow-lg rounded-4 border-0">
+                <div class="card-body p-5" style="margin:4rem">
+                    <h2 class="mb-4 text-center fw-bold">Edit Your Listing</h2>
+                    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" novalidate class="needs-validation" enctype="multipart/form-data">
+                        
+                        <!-- Title -->
+                        <div class="form-floating mb-4">
+                            <input required type="text" class="form-control" value="<%= listing.title %>" name="listing[title]" id="title" placeholder="Title">
+                            <label for="title">Title</label>
+                            <div class="invalid-feedback">Title should be valid</div>
                         </div>
-                </div>
 
-                <div class="mb-3">
-                    Original Listing Image
-                    <br>
-                    <img src="<%= originalImageUrl %>" alt="" style="height:100px; width:200px">
-                </div>
-
-                <div class="mb-3">
-                    <label for="image" class="form-label">Upload New Image</label>
-                    <input required type="file" class="form-control" value="<%= listing.image %>" name="listing[image]">
-                </div>
-
-                <div class="row">
-                    <div class="mb-3 col-md-4">
-                        <label for="price" class="form-label">Price</label>
-                        <input required min="0" type="number" class="form-control" value="<%= listing.price %>" name="listing[price]">
-                        <div class="invalid-feedback">
-                            Price should be valid
+                        <!-- Description -->
+                        <div class="form-floating mb-4">
+                            <textarea required class="form-control" name="listing[description]" id="description" cols="30" rows="5" placeholder="Description"><%= listing.description %></textarea>
+                            <label for="description">Description</label>
+                            <div class="invalid-feedback">Please enter a short description</div>
                         </div>
-                    </div>
 
-                    <div class="mb-3 col-md-8">
-                        <label for="country" class="form-label">Country</label>
-                        <input required type="text" class="form-control" value="<%= listing.country %>" name="listing[country]">
-                        <div class="invalid-feedback">
-                            Country name should be valid
+                        <!-- Original Image -->
+                        <div class="mb-4">
+                            <strong>Original Listing Image:</strong>
+                            <br>
+                            <img src="<%= originalImageUrl %>" alt="Current Image" class="img-fluid rounded" style="height:100px; width:200px;">
                         </div>
-                    </div>
-                </div>
 
-                <div class="mb-3">
-                    <label for="location" class="form-label">Location</label>
-                    <input required type="text" class="form-control" value="<%= listing.location %>" name="listing[location]">
-                    <div class="invalid-feedback">
-                        Location should be valid
-                    </div>
-                </div>
+                        <!-- Upload New Image -->
+                        <div class="mb-4">
+                            <label for="image" class="form-label">Upload New Image</label>
+                            <input type="file" class="form-control" name="listing[image]" id="image">
+                            <div class="invalid-feedback">Please upload a new image</div>
+                        </div>
 
-                <button class="btn btn-dark edit-btn mt-3">Edit</button>
-                <br><br>
-            </form>
+                        <!-- Price and Country -->
+                        <div class="row">
+                            <!-- Price -->
+                            <div class="col-md-4 mb-4 form-floating">
+                                <input required min="0" type="number" class="form-control" value="<%= listing.price %>" name="listing[price]" id="price" placeholder="Price">
+                                <label for="price">Price (₹)</label>
+                                <div class="invalid-feedback">Price should be valid</div>
+                            </div>
+
+                            <!-- Country -->
+                            <div class="col-md-8 mb-4 form-floating">
+                                <input required type="text" class="form-control" value="<%= listing.country %>" name="listing[country]" id="country" placeholder="Country">
+                                <label for="country">Country</label>
+                                <div class="invalid-feedback">Country name should be valid</div>
+                            </div>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-4 form-floating">
+                            <input required type="text" class="form-control" value="<%= listing.category %>" name="listing[category]" id="category" placeholder="Category">
+                            <label for="category">Category</label>
+                            <div class="invalid-feedback">Category name should be valid</div>
+                        </div>
+
+                        <!-- Location -->
+                        <div class="mb-4 form-floating">
+                            <input required type="text" class="form-control" value="<%= listing.location %>" name="listing[location]" id="location" placeholder="Location">
+                            <label for="location">Location</label>
+                            <div class="invalid-feedback">Location should be valid</div>
+                        </div>
+
+                        <!-- Submit Button -->
+                        <div class="d-grid">
+                            <button class="btn btn-dark btn-lg rounded-3 mt-3">Update Listing</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
+
+    <!-- Bootstrap Validation Script -->
+    <script>
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+</body>

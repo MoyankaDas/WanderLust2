@@ -1,0 +1,104 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<div class="container mt-5">
+  <form action="/bookings/<%= booking._id %>/update" method="POST" class="card shadow-lg p-4 px-5 rounded-4 mx-auto" style="max-width: 700px;">
+
+    <h3 class="text-center fw-semibold mb-4">✏️ Update Your Booking</h3>
+
+    <!-- Package Selection -->
+    <div class="mb-4">
+      <label for="package" class="form-label fw-bold">Package</label>
+      <select name="package" id="package" class="form-select form-select-lg" required>
+        <option value="">-- Select a package or leave blank for custom --</option>
+        <% packages.forEach(pkg => { %>
+          <option value="<%= pkg.name %>" <%= booking.package === pkg.name ? 'selected' : '' %>><%= pkg.name %></option>
+        <% }) %>
+      </select>
+    </div>
+
+    <!-- Custom Bedrooms -->
+    <div class="mb-4 custom-fields">
+      <label for="customBedrooms" class="form-label fw-bold">Number of Bedrooms</label>
+      <input type="number" name="customBedrooms" id="customBedrooms" class="form-control form-control-lg"
+        value="<%= booking.customBedrooms %>" min="1">
+    </div>
+
+    <input type="hidden" id="price" name="price" value="<%= booking.price || 0 %>">
+
+    <!-- Custom Bathrooms -->
+    <div class="mb-4 custom-fields">
+      <label for="customBathrooms" class="form-label fw-bold">Number of Bathrooms</label>
+      <input type="number" name="customBathrooms" id="customBathrooms" class="form-control form-control-lg"
+        value="<%= booking.customBathrooms %>" min="1">
+    </div>
+
+    <!-- Phone Number -->
+    <div class="mb-4">
+      <label for="phone" class="form-label fw-bold">Phone Number</label>
+      <input type="tel" name="phone" id="phone" class="form-control form-control-lg"
+        value="<%= booking.phone %>" required>
+    </div>
+
+    <!-- Dates -->
+    <div class="row mb-4">
+      <div class="col">
+        <label for="checkIn" class="form-label fw-bold">Check-in Date</label>
+        <input type="date" name="checkIn" id="checkIn" class="form-control form-control-lg"
+        value="<%= booking.checkIn ? booking.checkIn.toISOString().split('T')[0] : '' %>" required>
+      </div>
+      <div class="col">
+        <label for="checkOut" class="form-label fw-bold">Check-out Date</label>
+        <input type="date" name="checkOut" id="checkOut" class="form-control form-control-lg"
+        value="<%= booking.checkOut ? booking.checkOut.toISOString().split('T')[0] : '' %>" required>
+      </div>
+    </div>
+
+    <!-- Guests -->
+    <div class="row mb-4">
+      <div class="col">
+        <label for="adults" class="form-label fw-bold">Adults</label>
+        <input type="number" name="adults" id="adults" class="form-control form-control-lg"
+          value="<%= booking.adults %>" min="0" required>
+      </div>
+      <div class="col">
+        <label for="children" class="form-label fw-bold">Children</label>
+        <input type="number" name="children" id="children" class="form-control form-control-lg"
+          value="<%= booking.children %>" min="0" required>
+      </div>
+    </div>
+
+    <div class="row mb-4">
+      <div class="col">
+        <label for="orphans" class="form-label fw-bold">Orphans</label>
+        <input type="number" name="orphans" id="orphans" class="form-control form-control-lg"
+          value="<%= booking.orphans %>" min="0" required>
+      </div>
+      <div class="col">
+        <label for="pets" class="form-label fw-bold">Pets</label>
+        <input type="number" name="pets" id="pets" class="form-control form-control-lg"
+          value="<%= booking.pets %>" min="0" required>
+      </div>
+    </div>
+
+    <!-- Submit -->
+    <div class="d-grid mt-4">
+      <button type="submit" class="btn btn-primary btn-lg rounded-pill">💾 Save Changes</button>
+    </div>
+  </form>
+</div>
+
+<!-- Script to toggle customization fields -->
+<script>
+  const packageSelect = document.getElementById('package');
+  const customFields = document.querySelectorAll('.custom-fields');
+
+  function toggleCustomFields() {
+    const showCustom = !packageSelect.value; // Show if no package selected
+    customFields.forEach(field => {
+      field.style.display = showCustom ? 'block' : 'none';
+    });
+  }
+
+  packageSelect.addEventListener('change', toggleCustomFields);
+  window.addEventListener('DOMContentLoaded', toggleCustomFields);
+</script>
