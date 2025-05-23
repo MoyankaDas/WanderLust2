@@ -1,5 +1,8 @@
-if(process.env.NODE_ENV != "production"){
-    require('dotenv').config()
+// if(process.env.NODE_ENV != "production"){
+//     require('dotenv').config()
+// }
+if (process.env.NODE_ENV === "production") {
+    app.set("trust proxy", 1); // Trust Render's proxy
 }
 
 const express=require("express");
@@ -62,11 +65,13 @@ const sessionOptions={
     store,
     secret:process.env.SECRET,
     resave:false,
-    saveUninitialized:true,
+    // saveUninitialized:true,
+    saveUninitialized:false,
     cookie:{
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         maxAge:7*24*60*60*1000,
-        httpOnly:true
+        httpOnly:true,
+        secure: process.env.NODE_ENV === "production"
     }
 }
 
@@ -80,6 +85,7 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 app.use((req,res,next)=>{
+    console.log("Current user:", req.user);
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
     res.locals.currUser=req.user;
@@ -95,9 +101,9 @@ app.use("/", wishlistRoutes);
 app.use(balanceRoutes);
 
 
-app.listen(8080,()=>{
-    console.log("app listening");
-})
+// app.listen(8080,()=>{
+//     console.log("app listening");
+// })
 
 
 //...............
@@ -110,4 +116,9 @@ app.all("*",(req,res,next)=>{
 app.use((err,req,res,next)=>{
     let {statusCode=401,message="something went wrong"}=err;
     res.status(statusCode).render("error.ejs",{message});
+})
+
+
+app.listen(8080,()=>{
+    console.log("app listening");
 })

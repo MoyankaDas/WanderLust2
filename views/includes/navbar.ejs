@@ -72,7 +72,11 @@
         <a class="nav-link" href="/listings"><b>Explore</b></a>
       </div>
 
-     
+      <% if(currUser) { %>
+        <div class="navbar-nav">
+          <a class="nav-link" href="/wishlist"><b>❤️ Wishlist</b></a>
+        </div>&nbsp;&nbsp;&nbsp;
+        <% } %>
 
           <% if (currUser && currUser.isAdmin) { %>
             <div class="nav-item">
