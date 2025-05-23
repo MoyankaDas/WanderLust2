@@ -1,9 +1,7 @@
-// if(process.env.NODE_ENV != "production"){
-//     require('dotenv').config()
-// }
-if (process.env.NODE_ENV === "production") {
-    app.set("trust proxy", 1); // Trust Render's proxy
+if(process.env.NODE_ENV != "production"){
+    require('dotenv').config()
 }
+
 
 const express=require("express");
 const app=express();
@@ -65,8 +63,7 @@ const sessionOptions={
     store,
     secret:process.env.SECRET,
     resave:false,
-    // saveUninitialized:true,
-    saveUninitialized:false,
+    saveUninitialized:true,
     cookie:{
         expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         maxAge:7*24*60*60*1000,
@@ -101,9 +98,9 @@ app.use("/", wishlistRoutes);
 app.use(balanceRoutes);
 
 
-// app.listen(8080,()=>{
-//     console.log("app listening");
-// })
+app.listen(8080,()=>{
+    console.log("app listening");
+})
 
 
 //...............
@@ -118,7 +115,3 @@ app.use((err,req,res,next)=>{
     res.status(statusCode).render("error.ejs",{message});
 })
 
-
-app.listen(8080,()=>{
-    console.log("app listening");
-})
